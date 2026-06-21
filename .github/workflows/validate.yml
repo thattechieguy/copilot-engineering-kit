@@ -1,0 +1,53 @@
+name: Validate instructions and run eval harness
+
+on:
+  pull_request:
+    paths:
+      - ".github/copilot-instructions.md"
+      - ".github/instructions/**"
+      - "tests/**"
+  push:
+    branches: [main]
+
+jobs:
+  lint-instructions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check required files exist
+        run: |
+          test -f .github/copilot-instructions.md
+          test -d .github/instructions
+
+      - name: Check instructions file isn't empty / truncated
+        run: |
+          lines=$(wc -l < .github/copilot-instructions.md)
+          if [ "$lines" -lt 20 ]; then
+            echo "copilot-instructions.md looks suspiciously short ($lines lines)"
+            exit 1
+          fi
+
+  run-eval-harness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install pyyaml --break-system-packages
+
+      - name: Run eval harness against sample responses
+        run: |
+          cd tests
+          python3 run_eval.py --responses sample-responses.json --cases eval-cases.yaml
+
+      - name: Note on scope
+        run: |
+          echo "This CI job validates the harness mechanics using a fixed"
+          echo "sample-responses.json. It does NOT call a live model. To"
+          echo "test a real assistant, generate responses.json from actual"
+          echo "transcripts and run run_eval.py against that file."
