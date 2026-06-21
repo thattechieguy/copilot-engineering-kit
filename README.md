@@ -115,13 +115,14 @@ graph LR
     F -->|Score against<br/>rules| G["Pass/Fail<br/>per case"]
     G -->|Exit code| H["CI Gate"]
     
-    style A fill:#e1f5ff
-    style B fill:#fff3e0
-    style C fill:#f3e5f5
-    style E fill:#e8f5e9
-    style F fill:#fff9c4
-    style G fill:#fce4ec
-    style H fill:#c8e6c9
+    style A fill:#3b82f6,stroke:#1e40af,stroke-width:2px,color:#fff
+    style B fill:#f97316,stroke:#b45309,stroke-width:2px,color:#fff
+    style C fill:#a855f7,stroke:#6d28d9,stroke-width:2px,color:#fff
+    style D fill:#8b5cf6,stroke:#5b21b6,stroke-width:2px,color:#fff
+    style E fill:#10b981,stroke:#065f46,stroke-width:2px,color:#fff
+    style F fill:#ef4444,stroke:#991b1b,stroke-width:2px,color:#fff
+    style G fill:#ec4899,stroke:#831843,stroke-width:2px,color:#fff
+    style H fill:#22c55e,stroke:#15803d,stroke-width:2px,color:#fff
 ```
 
 ### Flow Overview
