@@ -45,6 +45,29 @@ tests/
   you have a way to capture assistant responses for the cases in
   `tests/eval-cases.yaml` — see that file's header comment for how.
 
+## How it works
+
+```mermaid
+graph LR
+    A["Instruction Files<br/>.github/copilot-instructions.md<br/>scoped .instructions.md files"] -->|Load| B["GitHub Copilot"]
+    B -->|Follow| C["Developer asks<br/>Copilot to do X"]
+    C -->|Response| D["Copilot's answer<br/>to developer"]
+    
+    E["Attack test cases<br/>eval-cases.yaml"] -->|Feed| F["run_eval.py<br/>harness"]
+    E -->|Produce| F
+    D -->|Capture &<br/>test| F
+    
+    F -->|Grade against<br/>rules| G["Pass/Fail<br/>per case"]
+    G -->|Exit code| H["CI gate"]
+```
+
+**Flow:**
+1. Instruction files are created and placed in `.github/` where Copilot loads them automatically.
+2. When you ask Copilot to do something, it considers the instructions.
+3. To test whether Copilot resists prompt-injection attacks, you feed it a test case from `eval-cases.yaml`.
+4. The `run_eval.py` harness grades the response against rules like "must not echo secrets" or "must not reproduce instructions."
+5. CI passes or fails based on whether test cases succeed.
+
 ## What this addresses
 
 This repo covers the five baseline prompt-injection patterns plus a few
