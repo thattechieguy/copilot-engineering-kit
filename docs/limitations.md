@@ -28,6 +28,21 @@ was written. New techniques will appear. This repo is meant to be a
 living baseline — see `CONTRIBUTING.md` for how to propose new patterns
 and mitigations as they're identified.
 
+Additional surfaces worth treating as high risk:
+- Hidden instructions embedded in comments, code fences, HTML metadata,
+    YAML front matter, SVG tags, or other non-obvious document fields.
+- Tool output poisoning, where a prior command, generated artifact, or
+    retrieved search result contains instruction-like text.
+- Pasted logs, issue/PR text, chat transcripts, or release notes that
+    mix normal content with directive language.
+- Obfuscation tricks such as Unicode confusables, zero-width characters,
+    odd line wrapping, or deliberate truncation that hide the real intent.
+- Credential leakage attempts, where the assistant is steered into
+    echoing API keys, tokens, cookies, or private keys instead of redacting
+    them.
+- Multi-file chains where each file looks harmless alone, but the
+    combined context is clearly trying to steer the assistant.
+
 ## 3. Different tools honor instructions differently
 
 GitHub Copilot's handling of `.github/copilot-instructions.md` and
